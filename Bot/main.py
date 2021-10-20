@@ -71,9 +71,17 @@ def add_listener(update: Update, context: CallbackContext) -> None:
     user_id = update.message.chat_id
     r_user = f"listener:{user_id}"
     user_context = {}
+    
     if r.exists(r_user):
         user_context = json.loads(r.get(r_user))
+
+    else:
+
+        pass
     
+    last_meas = r.lrange(r_var.meas_list, -1, -1)
+    last_meas = json.loads(last_meas[0])
+    user_context['last_id'] = str(last_meas['head'][3])
     user_context['name'] = update.effective_user.first_name
     r.set(r_user, json.dumps(user_context))    
 
